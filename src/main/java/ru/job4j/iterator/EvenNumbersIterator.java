@@ -8,14 +8,21 @@ public class EvenNumbersIterator implements Iterator<Integer> {
     private final int[] data;
     private int index;
 
+    private int idx = -1;
+
     public EvenNumbersIterator(int[] data) {
         this.data = data;
-        index = nextElement(0);
     }
 
     @Override
     public boolean hasNext() {
-        return index != -1;
+        for (int i = idx + 1; i < data.length; i++) {
+            if (data[i] % 2 == 0) {
+                index = i;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -23,19 +30,7 @@ public class EvenNumbersIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        Integer elements = data[index++];
-        index = nextElement(index);
-        return elements;
-    }
-
-    private int nextElement(int idx) {
-        int rsl = -1;
-        for (int i = idx; i < data.length; i++) {
-            if (data[i] % 2 == 0) {
-                rsl = i;
-                break;
-            }
-        }
-        return rsl;
+        idx = index;
+        return data[index];
     }
 }
