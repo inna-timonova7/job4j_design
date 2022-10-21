@@ -41,10 +41,15 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
-        return age == person.age && Objects.equals(name, person.name) && Objects.equals(birthday, person.birthday);
+        return age == person.age && Objects.equals(name, person.name) && Objects.equals(birthday,
+                person.birthday);
     }
 
     @Override
@@ -54,15 +59,22 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", birthday=" + birthday +
+        return "Person{"
+                +
+                "name='"
+                + name + '\''
+                +
+                ", age="
+                + age
+                +
+                ", birthday="
+                + birthday
+                +
                 '}';
     }
 
     public void printInfo(Collection<? extends Person> col) {
-        for (Iterator<? extends Person> it = col.iterator(); it.hasNext(); ) {
+        for (Iterator<? extends Person> it = col.iterator(); it.hasNext();) {
             Person next = it.next();
             System.out.println(next);
         }
