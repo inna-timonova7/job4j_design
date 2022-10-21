@@ -1,6 +1,7 @@
 package ru.job4j.generics;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Generics {
@@ -18,9 +19,9 @@ public class Generics {
         gen.printObject(List.of(third));
         System.out.println();
 
-        gen.printBoundedWildCard(first);
+        /* gen.printBoundedWildCard(first);*/
         gen.printBoundedWildCard(second);
-        gen.printBoundedWildCard(third);
+        /*gen.printBoundedWildCard(third);*/
         System.out.println();
 
         gen.printLowerBoundedWildCard(List.of(first));
@@ -28,20 +29,24 @@ public class Generics {
         gen.printLowerBoundedWildCard(List.of(third));
     }
 
-    public void printObject(List<Object> list) {
-        for (Object next : list) {
+    public void printObject(List<?> list) {
+        for (Iterator<?> it = list.iterator(); it.hasNext(); ) {
+            Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
     }
 
-    public void printBoundedWildCard(List<?> list) {
-        for (Object next : list) {
+
+    public void printBoundedWildCard(List<? extends Predator> list) {
+        for (Iterator<? extends Predator> it = list.iterator(); it.hasNext(); ) {
+            Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
     }
 
     public void printLowerBoundedWildCard(List<? super Predator> list) {
-        for (Object next : list) {
+        for (Iterator<? super Predator> it = list.iterator(); it.hasNext(); ) {
+            Object next = it.next();
             System.out.println("Текущий элемент: " + next);
         }
     }
