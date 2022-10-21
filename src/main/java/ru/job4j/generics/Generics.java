@@ -5,6 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Generics {
+
+    private static class Animal {
+    }
+
+    private static class Predator extends Animal {
+    }
+
+    private static class Tiger extends Predator {
+    }
+
     public static void main(String[] args) {
         Generics gen = new Generics();
         List<Animal> first = new ArrayList<>();
@@ -19,14 +29,14 @@ public class Generics {
         gen.printObject(List.of(third));
         System.out.println();
 
-        /* gen.printBoundedWildCard(first);*/
+        /*gen.printBoundedWildCard(first);*/
         gen.printBoundedWildCard(second);
-        /*gen.printBoundedWildCard(third);*/
+        gen.printBoundedWildCard(third);
         System.out.println();
 
-        gen.printLowerBoundedWildCard(List.of(first));
+        gen.printLowerBoundedWildCard(first);
         gen.printLowerBoundedWildCard(second);
-        gen.printLowerBoundedWildCard(List.of(third));
+        /*gen.printLowerBoundedWildCard(third);*/
     }
 
     public void printObject(List<?> list) {
