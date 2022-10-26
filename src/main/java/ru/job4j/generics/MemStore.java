@@ -8,11 +8,7 @@ public final class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public void add(T model) {
-        Map<String, T> map = new HashMap<>();
-        if (!storage.containsKey(model.getId())) {
-            storage.put(model.getId(), model);
-        }
-
+            storage.putIfAbsent(model.getId(), model);
     }
 
     @Override
