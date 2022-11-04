@@ -30,10 +30,20 @@ public class ListUsage {
         rsl.replaceAll(String::toUpperCase);
         rsl.remove(5);
         rsl.remove("SEVEN");
-//        rsl4.removeAll(list);
-//        rsl4.retainAll(list);
+/**
+ * Example of removeAll method:
+ * rsl4.removeAll(list);
+ */
+
+/**
+ * Example of retainAll method:
+ * rsl4.retainAll(list);
+ */
         rsl4.removeIf(s -> s.length() <= 2);
-//        rsl.sort(Comparator.reverseOrder());
+/**
+ * Example of sort(Comparator.reverseOrder()) method:
+ * rsl.sort(Comparator.reverseOrder());
+ */
 
         for (String s : rsl2) {
             System.out.println("Текущий элемент: " + s);
