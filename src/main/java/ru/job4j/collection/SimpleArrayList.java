@@ -17,6 +17,9 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     }
 
     private void widen() {
+        if (this.container.length == 0) {
+            this.container = Arrays.copyOf(this.container, size++);
+        }
         this.container = Arrays.copyOf(this.container, this.container.length * 2);
     }
 
@@ -32,13 +35,12 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
+        Objects.checkIndex(index, container.length);
         T nextValue = container[index];
         if (index < this.index) {
             container[index] = newValue;
-            return nextValue;
-        } else {
-            throw new ArrayIndexOutOfBoundsException();
         }
+        return nextValue;
     }
 
     @Override
@@ -67,7 +69,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
             throw new IllegalArgumentException();
         } else {
             container = (T[]) new Object[size];
-            return container.length;
+            return size;
         }
     }
 
@@ -81,14 +83,14 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return iteratorCursor < index;
             }
 
             @Override
             public T next() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
-                }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
