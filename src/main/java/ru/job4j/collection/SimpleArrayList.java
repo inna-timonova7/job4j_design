@@ -17,60 +17,50 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     }
 
     private void widen() {
-        if (this.container.length == 0) {
-            this.container = Arrays.copyOf(this.container, size++);
+        if (container.length == 0) {
+            container = Arrays.copyOf(container, 10);
         }
-        this.container = Arrays.copyOf(this.container, this.container.length * 2);
+        container = Arrays.copyOf(this.container, this.container.length * 2);
     }
 
     @Override
     public void add(T value) {
-        if (index > container.length - 1) {
+        if (size == container.length - 1) {
             widen();
         }
-        container[index++] = value;
+        container[size] = value;
         size++;
         modCount++;
     }
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, container.length);
+        Objects.checkIndex(index, size);
         T nextValue = container[index];
-        if (index < this.index) {
-            container[index] = newValue;
-        }
+        container[index] = newValue;
         return nextValue;
     }
 
     @Override
     public T remove(int index) {
-        if (index < 0 || size < index) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         T prevValue = container[index];
         System.arraycopy(container, index + 1, container, index, size - index - 1);
-        container[--size] = null;
+        container[size - 1] = null;
+        size--;
         modCount++;
         return prevValue;
     }
 
     @Override
     public T get(int index) {
-        if (index < 0 || size < index) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        return (T) this.container[index];
+        Objects.checkIndex(index, size);
+        return container[index];
     }
 
     @Override
     public int size() {
-        if (size < 0) {
-            throw new IllegalArgumentException();
-        } else {
-            container = (T[]) new Object[size];
-            return size;
-        }
+        return size;
     }
 
     @Override
@@ -86,7 +76,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return iteratorCursor < index;
+                return iteratorCursor < size;
             }
 
             @Override
@@ -94,7 +84,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return (T) container[iteratorCursor++];
+                return container[iteratorCursor++];
             }
         };
     }
