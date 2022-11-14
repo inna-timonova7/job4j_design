@@ -17,13 +17,14 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     private void widen() {
         if (container.length == 0) {
             container = Arrays.copyOf(container, 10);
+        } else {
+            container = Arrays.copyOf(this.container, this.container.length * 2);
         }
-        container = Arrays.copyOf(this.container, this.container.length * 2);
     }
 
     @Override
     public void add(T value) {
-        if (size == container.length - 1) {
+        if (size == container.length) {
             widen();
         }
         container[size] = value;
@@ -33,7 +34,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
+        get(index);
         T nextValue = container[index];
         container[index] = newValue;
         return nextValue;
@@ -41,7 +42,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
+        get(index);
         T prevValue = container[index];
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         container[size - 1] = null;
