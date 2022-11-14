@@ -34,16 +34,14 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        get(index);
-        T nextValue = container[index];
+        T nextValue = get(index);
         container[index] = newValue;
         return nextValue;
     }
 
     @Override
     public T remove(int index) {
-        get(index);
-        T prevValue = container[index];
+        T prevValue = get(index);
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         container[size - 1] = null;
         size--;
