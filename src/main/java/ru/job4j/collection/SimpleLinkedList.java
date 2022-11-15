@@ -47,12 +47,11 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
 
     @Override
     public E get(int index) {
+        Objects.checkIndex(index, size);
         int cursor = 0;
         Node<E> currentNode = first;
-        if (index == Objects.checkIndex(index, size)) {
-            while (cursor++ != index) {
-                currentNode = currentNode.next;
-            }
+        while (cursor++ != index) {
+            currentNode = currentNode.next;
         }
         return currentNode.item;
     }
