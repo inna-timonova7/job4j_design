@@ -11,49 +11,49 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
 
     private int modCount = 0;
 
-    private Node<E> first;
-
-    private Node<E> last;
+    private Node<E> node;
 
     public SimpleLinkedList() {
     }
 
     private static class Node<E> {
-        private E item;
+        private E value;
         private Node<E> next;
-        private Node<E> previous;
 
-        Node(Node<E> previous, E element, Node<E> next) {
-            this.item = element;
+        Node(E value, Node<E> next) {
+            this.value = value;
             this.next = next;
-            this.previous = previous;
         }
     }
 
     @Override
     public void add(E value) {
-        final Node<E> lastNode = last;
-        final Node<E> newNode = new Node<>(lastNode, value, null);
-        last = newNode;
-        if (lastNode == null) {
-            first = newNode;
-        } else {
-            lastNode.next = newNode;
-        }
         size++;
         modCount++;
 
+        Node<E> element = new Node<>(value, null);
+        if (node == null) {
+            node = element;
+            return;
+        }
+
+        Node<E> tail = node;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+        tail.next = element;
     }
 
     @Override
     public E get(int index) {
         Objects.checkIndex(index, size);
         int cursor = 0;
-        Node<E> currentNode = first;
-        while (cursor++ != index) {
-            currentNode = currentNode.next;
+        Node<E> elem = node;
+        while (cursor < index) {
+            elem = elem.next;
+            cursor++;
         }
-        return currentNode.item;
+        return elem.value;
     }
 
     @Override
@@ -61,14 +61,14 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
         return new Iterator<E>() {
 
             private final int expectedModCount = modCount;
-            private Node<E> current = first;
+            private Node<E> tail = node;
 
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return current != null;
+                return tail != null;
             }
 
             @Override
@@ -76,8 +76,8 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                E value = current.item;
-                current = current.next;
+                E value = tail.value;
+                tail = tail.next;
                 return value;
             }
         };
