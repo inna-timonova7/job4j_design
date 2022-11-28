@@ -2,6 +2,7 @@ package ru.job4j.iterator;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ListUtils {
 
@@ -36,6 +37,6 @@ public class ListUtils {
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-        removeIf(list, t -> list.remove(elements.contains(list)));
+        removeIf(list, Predicate.isEqual(list.removeAll(elements)));
     }
 }

@@ -45,14 +45,14 @@ class ListUtilsTest {
     void whenRemoveIf() {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         ListUtils.removeIf(input, a -> a < 6);
-        assertThat(Objects.equals(Arrays.asList(0, 1, 2, 2, 4, 5), input));
+        assertThat(input).hasSize(5).containsExactly(6, 7, 8, 9, 10);
     }
 
     @Test
     void whenReplaceIf() {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         ListUtils.replaceIf(input, (a -> a % 2 == 0), 11);
-        assertThat(Arrays.asList(0, 1, 11, 3, 11, 5, 11, 7, 11, 9, 11).equals(input));
+        assertThat(input).hasSize(11).containsExactly(11, 1, 11, 3, 11, 5, 11, 7, 11, 9, 11);
     }
 
     @Test
@@ -60,6 +60,6 @@ class ListUtilsTest {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
         List<Integer> elements = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5));
         ListUtils.removeAll(input, elements);
-        assertThat(Arrays.asList(6, 7, 8, 9, 10).equals(input));
+        assertThat(input).hasSize(5).containsExactly(6, 7, 8, 9, 10);
     }
 }
