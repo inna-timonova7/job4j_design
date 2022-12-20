@@ -36,7 +36,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private int indexFor(int hash) {
         return hash & (capacity - 1);
-//        return hash & (table.length - 1);
     }
 
     private void expand() {
