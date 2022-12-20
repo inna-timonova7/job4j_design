@@ -1,7 +1,5 @@
 package ru.job4j.map;
 
-import ru.job4j.generics.Node;
-
 import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
@@ -16,12 +14,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     private MapEntry<K, V>[] table = new MapEntry[capacity];
 
-    private float threshold = table.length * LOAD_FACTOR;
-
     @Override
     public boolean put(K key, V value) {
         boolean result = false;
-        if (count >= Math.round(threshold)) {
+        if (count >= Math.round(table.length * LOAD_FACTOR)) {
             expand();
         }
         int index = putForNull(key);
@@ -39,19 +35,20 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int indexFor(int hash) {
-        return hash & (table.length - 1);
+        return hash & (capacity - 1);
+//        return hash & (table.length - 1);
     }
 
     private void expand() {
-        MapEntry<K, V>[] newTable = new MapEntry[capacity * 2];
-        for (MapEntry<K, V> old : table) {
-            if (old != null) {
-                int newIndex = (old.key == null) ? 0 : indexFor(old.key.hashCode()
-                        & (newTable.length - 1));
-                newTable[newIndex] = old;
+        int newCapacity = capacity * 2;
+        MapEntry<K, V>[] newTable = table;
+        table = new MapEntry[newCapacity];
+        for (MapEntry<K, V> entry : newTable) {
+            if (entry != null) {
+                put(entry.key, entry.value);
+                newTable = table;
             }
         }
-        table = newTable;
     }
 
     @Override
@@ -79,13 +76,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int putForNull(K key) {
-        int result = 0;
+        int hash;
         if (key != null) {
-            result = indexFor(hash(key.hashCode()));
+            hash = key.hashCode();
+            hash = hash & (table.length - 1);
         } else {
-            result = 0;
+            hash = 0;
         }
-        return result;
+        return hash;
     }
 
     private boolean checkKey(K entryKey, K key) {
