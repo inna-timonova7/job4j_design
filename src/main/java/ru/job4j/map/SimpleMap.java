@@ -17,7 +17,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean put(K key, V value) {
         boolean result = false;
-        if (count >= Math.round(table.length * LOAD_FACTOR)) {
+        if (count >= capacity * LOAD_FACTOR) {
             expand();
         }
         int index = putForNull(key);
@@ -39,12 +39,12 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private void expand() {
-        int newCapacity = capacity * 2;
+        capacity  *= 2;
         MapEntry<K, V>[] newTable = table;
-        table = new MapEntry[newCapacity];
+        table = new MapEntry[capacity];
         for (MapEntry<K, V> entry : newTable) {
             if (entry != null) {
-                put(entry.key, entry.value);
+                table[putForNull(entry.key)] = entry;
                 newTable = table;
             }
         }
@@ -75,14 +75,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     }
 
     private int putForNull(K key) {
-        int hash;
-        if (key != null) {
-            hash = key.hashCode();
-            hash = hash & (table.length - 1);
-        } else {
-            hash = 0;
-        }
-        return hash;
+        return indexFor(hash(Objects.hashCode(key)));
     }
 
     private boolean checkKey(K entryKey, K key) {
