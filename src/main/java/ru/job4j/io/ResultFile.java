@@ -1,7 +1,6 @@
 package ru.job4j.io;
 
 import java.io.FileOutputStream;
-import java.nio.charset.StandardCharsets;
 
 public class ResultFile {
     public static String[] multiplicationTable(int num) {
