@@ -22,4 +22,16 @@ public class ResultFile {
             e.printStackTrace();
         }
     }
+
+    /*
+      BufferedOutputStream: change for buffer.
+      public static void main(String[] args) {
+          try (PrintWriter out = new PrintWriter (new BufferedOutputStream("data/result.txt"))) {
+          out.println("Hello world!");
+          } catch (IOException e) {
+          e.printStackTrace();
+          }
+          }
+          }
+     */
 }
