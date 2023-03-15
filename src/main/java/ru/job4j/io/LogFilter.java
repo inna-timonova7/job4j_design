@@ -3,6 +3,7 @@ package ru.job4j.io;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LogFilter {
     public List<String> filter(String file) {
@@ -19,7 +20,7 @@ public class LogFilter {
         try (PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file))
         )) {
             for (String str : log) {
-                out.write(str + System.lineSeparator());
+                out.println(str);
             }
         } catch (IOException e) {
             e.printStackTrace();
