@@ -17,17 +17,25 @@ public class Config {
 
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-            read.lines().filter(s -> !s.startsWith("#") && s.length() > 0)
+            read.lines().filter(s -> !s.startsWith("#") && !s.isEmpty())
                     .forEach(s -> {
-                        String[] str = s.trim().split("=", 2);
-                        if (str.length < 2) {
-                            throw new IllegalArgumentException("Mistake in the key=value pattern");
-                        }
+                        String[] str = s.split("=", 2);
+                        checkString(s);
                         values.put(str[0], str[1]);
                     });
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkString(String str) {
+        boolean rsl = false;
+        String[] strings = str.split("=", 2);
+        if (strings.length == 2 && strings[0].isBlank() && strings[1].isBlank()) {
+            throw new IllegalArgumentException("Mistake in the key=value pattern");
+        }
+        rsl = true;
+        return rsl;
     }
 
     public String value(String key) {
