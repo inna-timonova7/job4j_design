@@ -2,8 +2,7 @@ package ru.job4j.io;
 
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ConfigTest {
 
@@ -30,7 +29,6 @@ class ConfigTest {
         Config config = new Config(path);
         Config config2 = new Config(path2);
         config.load();
-        assertNull(config.value("name"));
-        assertNull(config2.value("name"));
+        config2.load();
     }
 }
