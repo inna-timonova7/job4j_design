@@ -3,7 +3,7 @@ package ru.job4j.io;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ConfigTest {
 
@@ -27,23 +27,17 @@ class ConfigTest {
     public void whenPairWithNullValueProperty() {
         String path = "./data/pair_empty_value_name.properties";
         Config config = new Config(path);
-        config.load();
-        /**
-         * assertThatThrownBy(config::load)
-         * .isInstanceOf(IllegalArgumentException.class)
-         * .hasMessageContaining("Mistake in the key=value pattern");
-         */
+        assertThatThrownBy(config::load)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Mistake in the key=value pattern");
     }
 
     @Test
     public void whenPairWithNullKeyProperty() {
         String path = "./data/pair_empty.key_name.properties";
         Config config = new Config(path);
-        config.load();
-        /**
-         * assertThatThrownBy(config::load)
-         * .isInstanceOf(IllegalArgumentException.class)
-         * .hasMessageContaining("Mistake in the key=value pattern");
-         */
+        assertThatThrownBy(config::load)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Mistake in the key=value pattern");
     }
 }

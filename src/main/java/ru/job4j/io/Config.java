@@ -19,18 +19,15 @@ public class Config {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().filter(s -> !s.startsWith("#") && !s.isEmpty())
                     .map(s -> s.split("=", 2))
-                    .peek(s -> {
-                        String[] str = s;
-                        checkString(str);
-                    }).forEach(k -> values.put(k[0], k[1]));
+                    .filter(this::checkString)
+                    .forEach(k -> values.put(k[0], k[1]));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public boolean checkString(String[] str) {
-        boolean rsl = false;
-        if (str.length != 2 & str[0].isBlank() & str[1].isBlank()) {
+        if (str.length != 2 || str[0].isBlank() || str[1].isBlank()) {
             throw new IllegalArgumentException("Mistake in the key=value pattern");
         }
         return true;
