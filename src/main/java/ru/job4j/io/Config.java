@@ -18,24 +18,22 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines().filter(s -> !s.startsWith("#") && !s.isEmpty())
-                    .forEach(s -> {
-                        String[] str = s.split("=", 2);
-                        checkString(s);
-                        values.put(str[0], str[1]);
-                    });
+                    .map(s -> s.split("=", 2))
+                    .peek(s -> {
+                        String[] str = s;
+                        checkString(str);
+                    }).forEach(k -> values.put(k[0], k[1]));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public boolean checkString(String str) {
+    public boolean checkString(String[] str) {
         boolean rsl = false;
-        String[] strings = str.split("=", 2);
-        if (strings.length == 2 && strings[0].isBlank() && strings[1].isBlank()) {
+        if (str.length != 2 & str[0].isBlank() & str[1].isBlank()) {
             throw new IllegalArgumentException("Mistake in the key=value pattern");
         }
-        rsl = true;
-        return rsl;
+        return true;
     }
 
     public String value(String key) {
